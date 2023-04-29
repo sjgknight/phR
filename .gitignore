@@ -1,6 +1,7 @@
 .Rproj.user
 # Created by https://www.toptal.com/developers/gitignore/api/r
 # Edit at https://www.toptal.com/developers/gitignore?templates=r
+resources/*
 
 ### R ###
 # History files

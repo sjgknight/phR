@@ -1,0 +1,15 @@
+Layout: "OneSlideLight"
+Title: "Sample Slide"
+Rights: "Created with R and the officer package"
+LogoBottomLeft: "data/image1.png"
+LeftPlaceholder: |
+  - Item 1
+  - Item 2
+  - Item 3
+RightFullHeightPlaceholder: |
+  1. Item A
+  2. Item B
+  3. Item C
+MiddlePlaceholder: "data/image1.png"
+Citations: kellyCollaborativeWebSearch2014
+Sliden: 1

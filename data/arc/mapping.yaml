@@ -1,0 +1,46 @@
+rpptx:
+  master: Office Theme
+  templates:
+    Title-light-rightlines:
+      RightVerticals:
+        ph_label: RightVerticals
+        content_type: text
+      Subtitle:
+        ph_label: Subtitle
+        content_type: text
+      TopLeftLogo:
+        ph_label: TopLeftLogo
+        content_type: image
+    Layout-3cols:
+      Title: 
+        ph_label: Title
+        content_type: text
+      LeftPlaceholder:
+        ph_label: LeftPlaceholder
+        content_type: text
+      MiddlePlaceholder:
+        ph_label: MiddlePlaceholder
+        content_type: text
+      RightFullHeightPlaceholder:
+        ph_label: RightFullHeightPlaceholder
+        content_type: text
+  md_def:
+    default:
+      color:                 black
+      font.size:             12
+      bold:                  TRUE
+      italic:                FALSE
+      underlined:            FALSE
+      font.family:           Helvetica
+      vertical.align:        baseline
+      shading.color:         transparent
+    Table_Labels:
+      color:                 black
+      font.size:             12
+      bold:                  TRUE
+      italic:                FALSE
+      underlined:            FALSE
+      font.family:           Helvetica
+      vertical.align:        baseline
+      shading.color:         transparent
+  post_processing:           NULL

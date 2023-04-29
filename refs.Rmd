@@ -1,0 +1,29 @@
+---
+title: R packages used
+bibliography: pkg-refs.bib
+#csl: null.csl
+---
+
+- base [@base]
+- rmarkdown [@rmarkdown]
+- dplyr [@dplyr]
+- magrittr [@magrittr]
+- officer [@officer]
+- onbrand [@onbrand]
+- pacman [@pacman]
+- here [@here]
+- RefManageR [@RefManageR]
+- tibble [@tibble]
+- purrr [@purrr]
+- yaml [@yaml]
+- xaringan [@xaringan]
+- xaringanExtra [@xaringanExtra]
+- grateful [@grateful]
+- tools [@tools]
+- ymlthis [@ymlthis]
+- ftExtra [@ftExtra]
+- readr [@readr]
+- stringr [@stringr]
+- tidyr [@tidyr]
+
+## References

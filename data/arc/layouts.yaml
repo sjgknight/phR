@@ -1,0 +1,96 @@
+- 1_Layout-3cols:
+    data:
+    - ph_label: LeftFullHeightPlaceholder
+      type: body
+    - ph_label: MiddlePlaceholder
+      type: body
+    - ph_label: RightPlaceholder
+      type: body
+    - ph_label: Title
+      type: title
+- Layout-3cols:
+    data:
+    - ph_label: LeftPlaceholder
+      type: body
+    - ph_label: LogoBottomLeft
+      type: body
+    - ph_label: MiddlePlaceholder
+      type: body
+    - ph_label: RightFullHeightPlaceholder
+      type: body
+    - ph_label: Title
+      type: title
+- Layout-3pics3txts:
+    data:
+    - ph_label: LogoBottomLeft
+      type: body
+    - ph_label: Picture Placeholder1
+      type: pic
+    - ph_label: Picture Placeholder2
+      type: pic
+    - ph_label: Picture Placeholder3
+      type: pic
+    - ph_label: TextColumn1
+      type: body
+    - ph_label: TextColumn2
+      type: body
+    - ph_label: TextColumn3
+      type: body
+    - ph_label: Title
+      type: title
+- Layout-head-text:
+    data:
+    - ph_label: LogoBottomLeft
+      type: body
+    - ph_label: MainText
+      type: body
+    - ph_label: Title
+      type: title
+- Layout-toppic:
+    data:
+    - ph_label: HeaderPlaceholder
+      type: body
+    - ph_label: LeftText
+      type: body
+    - ph_label: LogoBottomLeft
+      type: body
+    - ph_label: RightText
+      type: body
+- Split_Screen_BB:
+    data:
+    - ph_label: Rectangle 5
+      type: body
+    - ph_label: Rectangle 7
+      type: body
+    - ph_label: Title 1
+      type: title
+- Title-Dark-linescircle:
+    data:
+    - ph_label: Background
+      type: body
+    - ph_label: LogoTopLeft
+      type: body
+    - ph_label: Subtitle
+      type: body
+    - ph_label: Title
+      type: title
+- Title-Dark-rightburst:
+    data:
+    - ph_label: RightBurst
+      type: body
+    - ph_label: Subtitle
+      type: subTitle
+    - ph_label: Title
+      type: ctrTitle
+    - ph_label: TopLeftLogo
+      type: body
+- Title-light-rightlines:
+    data:
+    - ph_label: RightVerticals
+      type: body
+    - ph_label: Subtitle
+      type: body
+    - ph_label: Title
+      type: title
+    - ph_label: TopLeftLogo
+      type: body

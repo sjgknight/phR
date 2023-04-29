@@ -1,0 +1,173 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup}
+pacman::p_load(officer,magrittr,dplyr, onbrand)
+
+```
+
+```{r ppt}
+my_template <- read_pptx("data/utstemplate3.pptx") 
+
+layouts <- layout_summary(my_template)
+layout_properties <- layout_properties(my_template)
+
+#to see what your layouts are and their elements, you mightwant to use
+# annotate_base(
+#   "data/template.pptx", 
+#   "data/template_annotated.pptx"
+# )
+# you can see all of this in powerpoint by opening the template and:
+# view>Slide Master
+# within that view, right click the slide templates to rename them
+# and use alt+f10 (+fn in my case) on Windows to view the placeholder names
+
+```
+
+
+```{r oneslide, eval=FALSE, include=FALSE}
+#I created a pair of parent slides (light and dark) in Powerpoint. The template has  some common names and combines all distinct elements from what were child slides. 
+
+# If you have descriptive layouts, just use those.
+# if you have descriptive placeholders, and you don't want to have to remember whihc layout they belong to, instead do....
+lays <- my_template %>%
+    add_slide(layout = layouts$layout[1]) 
+
+  purrr::map(layout_properties %>% 
+               filter(name != layouts$layout[1]) %>%
+                 arrange(name, ph_label) %>%
+  filter(duplicated(ph_label) == FALSE), ~{
+    officer::on_slide(lays, 1) %>%
+      officer::ph_with(value = empty_content(),
+              location = ph_location(label = .x$ph_type, cx = .x$cx, cy = .x$cy, offx = .x$offx, offy = .x$offy,
+              newlabel = .x$ph_label)
+      )
+})
+
+# for (ph in unique_ph_list) {
+#   add_slide(ppt_base, layout = "Title and Content")
+#   ph_with(ppt_base, value = ph_empty(type = ph$type, location = ph$location))
+# }
+
+
+```
+
+
+
+```{r function}
+source(here::here("R/build_slide.R"))
+source(here::here("R/cite_me.R"))
+source(here::here("R/build_deck.R"))
+source(here::here("R/collate_yaml.R"))
+source(here::here("R/write_slides.R"))
+
+#takes as input ymlist = a list of yaml files mapping content to layouts; template = the powerpoint template, read into R using officer 
+
+myslides <- list.files("data/slides", pattern = "*.yaml", ignore.case = TRUE, include.dirs = TRUE, full.names = TRUE, recursive = TRUE)
+
+slides <- build_deck(myslides, layout = "OneSlideLight", template_file = here::here("data/utstemplate3.pptx"))
+
+#I've got an error somewhere, such that I replicate the entire deck n=length(yamllist) times...which is tedious, a work around is to print slides[[1]]
+print(slides[[1]], "output/test5.pptx")
+
+
+write_slides(slides, "output/test4.pptx")
+
+#if you wanted to delete empty placeholders, there's probably a way using
+#something from officer::pptx_summary(x) %>% View()
+#and ph_remove()
+```
+
+Remaining things:
+1. Add the constants to every slide - done
+2. Export a bib file to this project - done
+3. grateful::cite_packages() write to a slie ideally - done
+4. merge all slide layouts - done manually
+5. test - kinda
+
+
+
+### Defunct
+
+```{r testslide}
+
+#takes as input sidedata = a single row of data to build a slide from; template = the powerpoint template, read into R using officer
+#you can set a default layout, otherwise the default is Layout-head-text
+#if ther's a layout key in the yaml, that overrides the default
+#slide <- build_slide("data/test.yaml", layout = "OneSlideLight", template_file = here::here("data/utstemplate3.pptx"))
+
+#print(slide, target = "output/test.pptx")
+
+```
+
+
+```{r addcontent}
+# layout_properties %>% select(name,ph_label,type)
+# 
+# my_pres <- my_template %>% 
+#   add_slide(layout = layouts$layout[1], master = "Office Theme") %>% 
+#   add_slide(layout = layouts$layout[1], master = "Office Theme") %>% 
+#   ph_with(location = ph_location_type(type = "ctrTitle"), value = "A title") %>%
+#   ph_with(location = ph_location_type(type = "subTitle"), value = "Dr Simon Knight") %>%
+#   on_slide(1) 
+# 
+# my_template %>% 
+#   add_slide(layout = layouts$layout[1], master = "Office Theme") %>% 
+#        ph_with(location = ph_location_label(ph_label = "TopLeftLogo"), value = external_img("data/image1.png") ) %>%
+#   add_slide(layout = layouts$layout[1], master = "Office Theme") %>% 
+#        ph_with(location = ph_location_label(ph_label = "RightBurst"), value = external_img("data/image1.png") ) 
+#   
+# 
+# print(my_pres, target = "output/ph_with_location_4.pptx") 
+# 
+
+```
+
+To do this you might want to look at https://cran.r-project.org/web/packages/onbrand/vignettes/Custom_Office_Templates.html 
+
+I'm not clear what the onbrand package helps with that you can't do more easily by editing the powerpoint template file.
+
+```{r onbrand}
+x <-layout_properties %>%
+    select(name,ph_label, type) %>%
+  mutate(element = ph_label) # edit these if you want user friendly names
+
+x <- x %>% 
+  dplyr::nest_by(element,name) 
+
+x <-x %>%
+    mutate(data = list(purrr::map2(data, element, ~set_names(unlist(.x), .y)
+    ))) %>%
+  ungroup()
+
+x <- x %>% 
+  select(name,data) %>%
+  dplyr::nest_by(name)
+
+x <- purrr::map2(x$data, x$name, ~set_names(list(.x),.y)) 
+
+
+#x <- set_names(x$data,x$name)
+
+yaml::write_yaml(x, "data/layouts.yaml")
+  
+#NOTE the yaml will need manually editing
+obnd <- read_template("data/utstemplate2.pptx",
+                      "data/mapping.yaml")
+
+
+obnd = report_add_slide(obnd,
+  template = "Layout-3cols",
+  elements = list(
+   Title = list(content = "Adding List Content",
+                          type    = "text"),
+     LeftPlaceholder = list(content = c("1", "This is first level bullet","2", "this is a subbullet", "1", "while this is back at level 1"),
+                          type    = "list")))
+
+```
+

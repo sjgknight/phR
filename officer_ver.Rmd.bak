@@ -1,0 +1,57 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+To do this you might want to look at https://cran.r-project.org/web/packages/onbrand/vignettes/Custom_Office_Templates.html 
+
+```{r setup}
+
+pacman::p_load(officer,magrittr,dplyr)
+
+```
+
+```{r ppt}
+
+my_template <- read_pptx("data/utstemplate.pptx") 
+
+annotate_base(
+  "data/utstemplate.pptx", 
+  "data/utstemplate_annotated.pptx"
+)
+
+layouts <- layout_summary(my_template)
+layout_properties <- layout_properties(my_template)
+
+my_pres <- my_template %>% 
+  add_slide(layout = layouts$layout[9], master = "Office Theme")
+
+
+my_pres <- my_pres %>% 
+  ph_with(location = ph_location_type(type = "title"), value = c("A title"))
+
+%>%
+  ph_with(location = "FooterBottomRight", value = format(Sys.Date())) %>%
+  ph_with(location = "FooterBottomRight", value = "slide 1") 
+
+%>%
+  ph_with(value = "Hello world", location = "body")
+
+
+layout_properties ( x = my_pres, layout = "Two Content", master = "Office Theme" ) %>% head()
+
+my_pres <- read_pptx() %>% 
+  add_slide(layout = "Two Content", master = "Office Theme") %>% 
+  add_slide(layout = "Title and Content", master = "Office Theme") %>% 
+  add_slide(layout = "Title Only", master = "Office Theme")
+
+length(my_pres)
+
+
+#to output
+print(my_pres, target = "output/pptx/first_example.pptx") %>% 
+  invisible()
+```
+
