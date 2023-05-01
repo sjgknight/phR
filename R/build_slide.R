@@ -57,14 +57,14 @@ build_slide <- function(yaml_file,
   #this is functionally defunct because it isn't reading in an original deck in any case
   #if I wanted to do something like this the way would be to base it on file modification date maybe
   #but I don't know how to read in an existing deck using officer
-  slide <-
-    if (update && "Sliden" %in% names(yaml_data)) {
-      # select slide to update
-      officer::on_slide(template_file, yaml_data[["Sliden"]])
-      } else {
-        # add a new slide
-        officer::add_slide(template_file, layout = layout, master = "Office Theme")
-        }
+  slide <- officer::add_slide(template_file, layout = layout, master = "Office Theme")
+    # if (all(update,"Sliden" %in% names(yaml_data))) {
+    #   # select slide to update
+    #   officer::on_slide(template_file, yaml_data[["Sliden"]])
+    #   } else {
+    #     # add a new slide
+    #     officer::add_slide(template_file, layout = layout, master = "Office Theme")
+    #     }
 
 
   # Loop through YAML data and replace placeholders with content
@@ -86,14 +86,26 @@ build_slide <- function(yaml_file,
       # Ordered list
       items <- strsplit(yaml_data[[key]], "\\d+\\. ")[[1]][-1] # Remove first empty element
      # for (i in 1:length(items)) {
-        officer::ph_with(slide, location = ph_location_label(ph_label = key), value = unordered_list(str_list = items, level_list = rep(1, length(items)))) #fpar(fp_text_lite(value = items[i], bullet = i), level = 1))
+        officer::ph_with(slide,
+                         location = ph_location_label(ph_label = key),
+                         value = unordered_list(str_list = items, level_list = rep(1, length(items)))) #fpar(fp_text_lite(value = items[i], bullet = i), level = 1))
       #}
     } else {
       # Replace text
       if(key %in% officer::layout_properties(template_file, layout)$ph_label){
-        officer::ph_with(slide, location = ph_location_label(ph_label = key), value = yaml_data[[key]]) #fpar(fp_text_lite(yaml_data[[key]])))
+        officer::ph_with(slide,
+                         location = ph_location_label(ph_label = key),
+                          value = ph_resizer(slide = slide,
+                                             layout = layout,
+                                             context = "slidebuild",
+                                             template_file = template_file,
+                                             ph = key,
+                                             value = yaml_data[[key]]))
+                         #value = yaml_data[[key]]) ##fpar(fp_text_lite(yaml_data[[key]])))
       } else if (!discard) {
-        officer::ph_with(slide, location = ph_location_type(type = "body"), value = yaml_data[[key]])
+        officer::ph_with(slide,
+                         location = ph_location_type(type = "body"),
+                         value = yaml_data[[key]])
       }
     }
   }

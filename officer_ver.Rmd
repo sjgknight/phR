@@ -15,7 +15,7 @@ pacman::p_load(officer,magrittr,dplyr, onbrand)
 my_template <- read_pptx("data/utstemplate3.pptx") 
 
 layouts <- layout_summary(my_template)
-layout_properties <- layout_properties(my_template)
+layout_props <- layout_properties(my_template)
 
 #to see what your layouts are and their elements, you mightwant to use
 # annotate_base(
@@ -28,35 +28,6 @@ layout_properties <- layout_properties(my_template)
 # and use alt+f10 (+fn in my case) on Windows to view the placeholder names
 
 ```
-
-
-```{r oneslide, eval=FALSE, include=FALSE}
-#I created a pair of parent slides (light and dark) in Powerpoint. The template has  some common names and combines all distinct elements from what were child slides. 
-
-# If you have descriptive layouts, just use those.
-# if you have descriptive placeholders, and you don't want to have to remember whihc layout they belong to, instead do....
-lays <- my_template %>%
-    add_slide(layout = layouts$layout[1]) 
-
-  purrr::map(layout_properties %>% 
-               filter(name != layouts$layout[1]) %>%
-                 arrange(name, ph_label) %>%
-  filter(duplicated(ph_label) == FALSE), ~{
-    officer::on_slide(lays, 1) %>%
-      officer::ph_with(value = empty_content(),
-              location = ph_location(label = .x$ph_type, cx = .x$cx, cy = .x$cy, offx = .x$offx, offy = .x$offy,
-              newlabel = .x$ph_label)
-      )
-})
-
-# for (ph in unique_ph_list) {
-#   add_slide(ppt_base, layout = "Title and Content")
-#   ph_with(ppt_base, value = ph_empty(type = ph$type, location = ph$location))
-# }
-
-
-```
-
 
 
 ```{r function}
@@ -89,8 +60,37 @@ Remaining things:
 3. grateful::cite_packages() write to a slie ideally - done
 4. merge all slide layouts - done manually
 5. test - kinda
+s
 
 
+
+
+```{r oneslide, eval=FALSE, include=FALSE}
+#I created a pair of parent slides (light and dark) in Powerpoint. The template has  some common names and combines all distinct elements from what were child slides. 
+
+# If you have descriptive layouts, just use those.
+# if you have descriptive placeholders, and you don't want to have to remember whihc layout they belong to, instead do....
+lays <- my_template %>%
+    add_slide(layout = layouts$layout[1]) 
+
+  purrr::map(layout_properties %>% 
+               filter(name != layouts$layout[1]) %>%
+                 arrange(name, ph_label) %>%
+  filter(duplicated(ph_label) == FALSE), ~{
+    officer::on_slide(lays, 1) %>%
+      officer::ph_with(value = empty_content(),
+              location = ph_location(label = .x$ph_type, cx = .x$cx, cy = .x$cy, offx = .x$offx, offy = .x$offy,
+              newlabel = .x$ph_label)
+      )
+})
+
+# for (ph in unique_ph_list) {
+#   add_slide(ppt_base, layout = "Title and Content")
+#   ph_with(ppt_base, value = ph_empty(type = ph$type, location = ph$location))
+# }
+
+
+```
 
 ### Defunct
 

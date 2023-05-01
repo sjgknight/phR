@@ -8,9 +8,9 @@ output:
       highlightLines: true
       countIncrementalSlides: false
       css: ["data/custom.css"]
-title: "How do we learn to engage ethically with AI"
+title: "a title"
 author: "sjgknight"
-institute: "University of Technology Sydney (UTS) TD School <br> Digital Futures Scholar-in-Residence, Stockholm <br> UCL IoE Honorary Associate Professor"
+institute: "University of Technology Sydney (UTS) TD School <br> "
 #theme: cosmo
 description: |
   A talk
